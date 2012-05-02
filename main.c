@@ -8,13 +8,17 @@
 #include <stdlib.h>
 #include "pieces.h"
 #include "popolation.h"
+#define SOGLIA_ESCALATION 200
+
 
 int main(int argc, char** argv) {
     /* Dichiarazione variabili */
     int row,col;//numero righe e colonne matrice dei pezzi
     int npieces,//numero pezzi
         *border,// vettore dei pezzi di bordo di npieces el.per ogni pezzo dice se è di bordo.val è pari al num di trinagoli grigi(0=centro,1=bordo,2=angolo)
-        i;
+            temp, // massimo di una generazione
+            escalation, // contiene il numero di iterazioni non miglioranti consecutive
+            i;
     int **pieces;//vettore dei colori del pezzo
     solution_t best;//contiene migliore soluzione trovata
     population_t *population; // puntatore a popolazione
@@ -32,11 +36,20 @@ int main(int argc, char** argv) {
     best.fitness=population->soluzioni[0].fitness;
     best.matrice_pezzi=matcp(population->soluzioni[0],row,col);
     if(!(is_best(population,row,col))){
+        while(population->pop_dim<=10000)
         for(i=0;(i<MAX_ITERATIONS)&&(best.fitness!=MAX_PT);i++){
-                if(pop_evolution(pieces,npieces,population,row,col,border)>best.fitness){
+            temp=pop_evolution(pieces,npieces,population,row,col,border);
+                if(temp>best.fitness){
                     best.fitness=population->soluzioni[0].fitness;
                     best.matrice_pezzi=matcp(population->soluzioni[0],row,col);
-                
+                    escalation=0;
+                }
+                else {
+                    escalation++;
+                    if (escalation>SOGLIA_ESCALATION){
+                        expand_population(pieces,npieces,population,row,col,border);
+                        break;
+                }
                 }
                 test_evolution(population,&best,MAX_PT);
         }

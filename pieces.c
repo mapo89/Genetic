@@ -494,3 +494,10 @@ unsigned char***matcp(solution_t sol,int row,int col){
     }
     return(m);
 }
+
+solution_t solution_copy(solution_t source,int row,int col){
+    solution_t dest;
+    dest.fitness=source.fitness;
+    dest.matrice_pezzi=matcp(source,row,col);
+    return (dest);
+}

@@ -28,7 +28,9 @@ population_t *build_population(int **pieces,int *border,int npieces,int row,int 
         popolazione_start->soluzioni[i].fitness=fitness_solution_evaluation(pieces,&popolazione_start->soluzioni[i],npieces,row,col);
     }
     popolazione_start->current_iteration=0;
-    //printf("N° soluzioni feasible: %d\n", nfeasible);
+    popolazione_start->pop_dim=POP_DIM;
+    popolazione_start->elite=ELITE;
+    popolazione_start->gen_n=GEN_N;
     return popolazione_start;
 }
 
@@ -36,7 +38,7 @@ void test_fitness(population_t *pop){
     int i,max=0,idmax=0;
     float media,varianza,totale;
     //printf("Qual è la miglior soluzione?\n");
-    for(i=0;i<POP_DIM;i++){
+    for(i=0;i<pop->pop_dim;i++){
         if ((pop->soluzioni[i].fitness)>max){
             max=pop->soluzioni[i].fitness;
             idmax=i;
@@ -44,11 +46,11 @@ void test_fitness(population_t *pop){
         totale+=pop->soluzioni[i].fitness;
        // printf("Soluzione %d --> %d\n",i,pop->soluzioni[i].fitness);
     }
-    media =(float) totale / POP_DIM;
-    for(i=0;i<POP_DIM;i++){
+    media =(float) totale / pop->pop_dim;
+    for(i=0;i<pop->pop_dim;i++){
         varianza += pow((pop->soluzioni[i].fitness - media),2); 
     }
-    varianza = varianza / (POP_DIM-1);
+    varianza = varianza / (pop->pop_dim-1);
 /*
     printf("Media %f\n",media);
     printf("Varianza %f\n",varianza);
@@ -69,7 +71,7 @@ int cmp_fitness(solution_t s1cast,solution_t s2cast){
 }
 
 void sorted_popolation(population_t *pop,int **pieces){
-  quick_sort(pop->soluzioni,0,POP_DIM-1,cmp_fitness);  
+  quick_sort(pop->soluzioni,0,pop->pop_dim-1,cmp_fitness);  
 }
 
 void quick_sort(solution_t *array, int l, int r, int (*cmp)(solution_t lv, solution_t rv))
@@ -142,7 +144,7 @@ int is_best(population_t* pop,int row,int col){
         inseriti, quindi ogni generazione un 50% degli elementi muore ed è
         sostituito dai figli*/
 int pop_evolution(int **pieces,int npieces,population_t *pop,int row, int col,int *border){
-    long parents[GEN_N];//vettore dell soluzioni scelte come parenti tra cui
+    long *parents=(long *)malloc(sizeof(long)*pop->gen_n);//vettore dell soluzioni scelte come parenti tra cui
                              //estrarre le coppie di genitori per crossover
                              //la soluzione è memorizzata come indice nel vettore
                              //popolazione dichiarato come puntatore generico per
@@ -151,10 +153,10 @@ int pop_evolution(int **pieces,int npieces,population_t *pop,int row, int col,in
                              //E' usata nche per tenere conto dell'estarazione 
                              //per la scelta degli accoppiamenti se val positivo
                              //allora già estratto
-    solution_t offspring[GEN_N];//vettore dei figli
+    solution_t *offspring=(solution_t *)malloc(sizeof(solution_t)*pop->gen_n);;//vettore dei figli
     
    //printf("Entro in Pop Evolution\n");
-    parent_selection(parents);
+    parent_selection(parents,pop);
     /*DEBUG
     for(i=0;i<GEN_N;printf("parent%ld:%ld\n",i,parents[i++]));*/
     offspring_generation(pieces,npieces,pop,parents,offspring,row,col);
@@ -163,12 +165,12 @@ int pop_evolution(int **pieces,int npieces,population_t *pop,int row, int col,in
     //test_fitness(pop);
     sorted_popolation(pop,pieces);
     //MUTATION triggerata solo quando per tre generazioni la varianza è nulla
-    if (pop->current_iteration>GEN_N/5){
+    if (pop->current_iteration>pop->gen_n/5){
         //if(abs(pop->bests[pop->current_iteration-10][MAX]-pop->bests[pop->current_iteration][MAX])<10){
         if (pop->bests[pop->current_iteration][VARIANZA] < 1 && pop->bests[(pop->current_iteration)-1][VARIANZA] < 1 && pop->bests[(pop->current_iteration)-2][VARIANZA] < 1 ){
             mutation(pieces,npieces,pop,row,col,border);
             sorted_popolation(pop,pieces);
-            fprintf(stderr,"mutazione\n");
+            //fprintf(stderr,"mutazione\n");
         }
     }
     return(get_best(pop));
@@ -1158,7 +1160,7 @@ void test_evolution(population_t *pop,solution_t *best,int MAX_PT){
     if (pop->current_iteration==MAX_ITERATIONS)
         printf("RISULTATO FINALE\n");
     printf("Evoluzione: Generazione %d\n", pop->current_iteration );
-    printf("Dimensione popolazione: %d\n", POP_DIM);
+    printf("Dimensione popolazione: %ld\n", pop->pop_dim);
     printf("Media Popolazione: %f \t Varianza Popolazione: %f \n",pop->bests[pop->current_iteration][MEDIA],pop->bests[pop->current_iteration][VARIANZA]);
     printf("Miglior Soluzione Corrente punti: %d\n",(int)pop->bests[pop->current_iteration][MAX]);
     printf("Miglior Soluzione Corrente punti: %d\n",(int)best->fitness);
@@ -1185,10 +1187,30 @@ void write_evolution(population_t *pop,char *nomefile){
        fprintf(fp,"GENERAZIONE,MAX,MEDIA,VARIANZA\n",nomefile);
        for(i=0;i<pop->current_iteration;i++){
             fprintf(fp,"%d,",i);
-         for(j=0;j<N_MISURE;j++)
+         for(j=0;j<N_MISURE;j=j+5)
                 fprintf(fp,"%d,",(int)pop->bests[i][j]); 
          fprintf(fp,"\n");
        }
        fclose(fp);
        return;
 }
+
+void expand_population(int **pieces,int npieces,population_t *pop,int row,int col,int *border){ 
+    long i;
+    solution_t *sol_array;
+    long old=pop->pop_dim;
+    pop->pop_dim*=10;
+    pop->gen_n=(pop->pop_dim/2+(pop->pop_dim/2)%2);
+    pop->elite=pop->pop_dim/3;
+    sol_array=(solution_t*)malloc(sizeof(solution_t)*pop->pop_dim);
+    for(i=0;i<old;i++){
+        sol_array[i]=solution_copy(pop->soluzioni[i],row,col);
+        dealloc_soluzioni(&(pop->soluzioni[i]),row,col);
+    }
+    for(i=old;i<pop->pop_dim;i++){
+        random_solution_generation(&(pop->soluzioni[i]),border,pieces,npieces,row,col);
+    }
+    free(pop->soluzioni);
+    pop->soluzioni=sol_array;
+    return;
+    }

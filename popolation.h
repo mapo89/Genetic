@@ -17,10 +17,10 @@ extern "C" {
 #include "pieces.h"
 #include <math.h>
     
-#define POP_DIM 1000
-#define GEN_N (POP_DIM/2+(POP_DIM%2))//numero genitori è metà della popolazione
+#define POP_DIM 100
+#define GEN_N (POP_DIM/2+(POP_DIM/2)%2)//numero genitori è metà della popolazione
                                    //deve essere pari percui se è dispari somma 1
-#define ELITE (POP_DIM/3)//numero di migliori tra i genitori (è pari)
+#define ELITE (POP_DIM/4)//numero di migliori tra i genitori (è pari)
 //#define CASUALI (GEN_N-ELITE)//genitori da scegliere a caso (sol 0-elite)
 #define RANGE_CAS (POP_DIM-ELITE)//numero di valori tra cui estrarre gli el casuali
                                //evitando di estrarre le sol tra 0 ed elite 
@@ -36,7 +36,11 @@ extern "C" {
 typedef struct population_s {
     solution_t *soluzioni;
     float bests[MAX_ITERATIONS+1][N_MISURE]; // Vettore per registrare i valore dei massimi durante l'evoluzione
-    int current_iteration; // numero dell'iterazione corrente
+    int current_iteration; // numero dell'iterazione correnteù
+    long pop_dim;// dimensione popolazione
+    long gen_n;//numero genitori è metà della popolazione
+                                   //deve essere pari percui se è dispari somma 1
+    long elite; //numero di migliori tra i genitori
 } population_t;
 
 //boolean val
