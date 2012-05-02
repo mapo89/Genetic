@@ -1,6 +1,5 @@
 #include"evolution.h"
 #include"popolation.h"
-
 /*funzione per selezionare genitori da cui generare nuove soluzioni
  riceve il vettore dei parenti (ogni el è indice della sol nel vettore popolazione)*/
 void parent_selection(long *parents,population_t *pop){
@@ -152,6 +151,15 @@ void mutation(int **pieces,int npieces,population_t *pop,int row, int col,int *b
     for(l=pop->pop_dim/100;l<pop->pop_dim-1;l++){ // POP
                     random_solution_generation(&(pop->soluzioni[l]),border,pieces,npieces,row,col);   
                     pop->soluzioni[l].fitness=fitness_solution_evaluation(pieces,&(pop->soluzioni[l]),npieces,row,col);
+                    //elite=POP_DIM/6;
+                }
+    //fprintf(stderr,"C'è stata una mutazione");
+}
+
+void light_mutation(int **pieces,int npieces,population_t *pop,int row, int col,int *border){
+    long l;//indice per scorrere la matrice di soluzioni nella mutazione 
+    for(l=5*pop->pop_dim/10;l<pop->pop_dim-1;l++){ // POP
+        random_rotate(&(pop->soluzioni[l]),row,col);
                     //elite=POP_DIM/6;
                 }
     //fprintf(stderr,"C'è stata una mutazione");

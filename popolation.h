@@ -15,7 +15,7 @@ extern "C" {
 #include <stdlib.h>
 #include <time.h>
 #include "pieces.h"
-#include <math.h>
+
     
 #define POP_DIM 100
 #define GEN_N (POP_DIM/2+(POP_DIM/2)%2)//numero genitori è metà della popolazione

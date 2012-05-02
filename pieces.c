@@ -501,3 +501,15 @@ solution_t solution_copy(solution_t source,int row,int col){
     dest.matrice_pezzi=matcp(source,row,col);
     return (dest);
 }
+
+ void random_rotate(solution_t *sol,int row,int col){
+     int i,j;
+     char a;
+     for(i=1;i<row-1;i++)
+         for(j=1;j<col-1;j++){
+             a=rand()%4;
+             sol->matrice_pezzi[i][j][1]= a;
+        }
+     return;
+ }
+ 

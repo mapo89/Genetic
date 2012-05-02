@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
     best.fitness=population->soluzioni[0].fitness;
     best.matrice_pezzi=matcp(population->soluzioni[0],row,col);
     if(!(is_best(population,row,col))){
-        while(population->pop_dim<=10000)
+        while(population->pop_dim<=50000)
         for(i=0;(i<MAX_ITERATIONS)&&(best.fitness!=MAX_PT);i++){
             temp=pop_evolution(pieces,npieces,population,row,col,border);
                 if(temp>best.fitness){

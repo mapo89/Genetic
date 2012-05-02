@@ -54,7 +54,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=
+LDLIBSOPTIONS=-lm
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -62,7 +62,7 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/genetic: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.c} -lgomp -pthread -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/genetic ${OBJECTFILES} ${LDLIBSOPTIONS} 
+	${LINK.c} -lm -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/genetic ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
 ${OBJECTDIR}/pieces.o: pieces.c 
 	${MKDIR} -p ${OBJECTDIR}

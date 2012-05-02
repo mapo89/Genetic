@@ -12,17 +12,13 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-
-
-
-
+void parent_selection(long parents[],population_t *pop);
+void offspring_generation(int **pieces,int npieces,population_t *pop,long parents[],solution_t offspring[],int row, int col);
+void substitution(population_t *pop,solution_t offspring[],int row, int col);
+void mutation(int **pieces,int npieces,population_t *pop,int row, int col,int *border);
 #ifdef	__cplusplus
 }
 #endif
 
 #endif	/* EVOLUTION_H */
 
-void parent_selection(long parents[],population_t *pop);
-void offspring_generation(int **pieces,int npieces,population_t *pop,long parents[],solution_t offspring[],int row, int col);
-void substitution(population_t *pop,solution_t offspring[],int row, int col);
-void mutation(int **pieces,int npieces,population_t *pop,int row, int col,int *border);

@@ -1,7 +1,7 @@
 
 #include "popolation.h"
 #include"evolution.h"
-
+#include <math.h>
 /*Funzione che crea la popolazione
  *  
  */
@@ -50,7 +50,7 @@ void test_fitness(population_t *pop){
     for(i=0;i<pop->pop_dim;i++){
         varianza += pow((pop->soluzioni[i].fitness - media),2); 
     }
-    varianza = varianza / (pop->pop_dim-1);
+    varianza =sqrt((double)varianza / (pop->pop_dim-1));
 /*
     printf("Media %f\n",media);
     printf("Varianza %f\n",varianza);
@@ -164,6 +164,12 @@ int pop_evolution(int **pieces,int npieces,population_t *pop,int row, int col,in
     //DEBUG
     //test_fitness(pop);
     sorted_popolation(pop,pieces);
+    if (abs( pop->bests[(pop->current_iteration)-1][VARIANZA] )< 2.5){
+    //if (&& pop->bests[(pop->current_iteration)-1][VARIANZA] < 1 && pop->bests[(pop->current_iteration)-2][VARIANZA] < 1 ){
+        light_mutation(pieces,npieces,pop,row,col,border);
+            sorted_popolation(pop,pieces);
+            //fprintf(stderr,"mutazione\n");
+        }
     //MUTATION triggerata solo quando per tre generazioni la varianza è nulla
     //if (pop->current_iteration>pop->gen_n/5){
         //if(abs(pop->bests[pop->current_iteration-10][MAX]-pop->bests[pop->current_iteration][MAX])<10){
@@ -1201,7 +1207,7 @@ void expand_population(int **pieces,int npieces,population_t *pop,int row,int co
     long i;
     solution_t *sol_array;
     long old=pop->pop_dim;
-    pop->pop_dim*=10;
+    pop->pop_dim*=2;
     pop->gen_n=(pop->pop_dim/2+(pop->pop_dim/2)%2);
     pop->elite=pop->pop_dim/3;
     sol_array=(solution_t*)malloc(sizeof(solution_t)*pop->pop_dim);

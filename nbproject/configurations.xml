@@ -47,10 +47,13 @@
       </toolsSet>
       <compileType>
         <cTool>
-          <commandLine>-fopenmp</commandLine>
+          <commandLine>-lm</commandLine>
         </cTool>
         <linkerTool>
-          <commandLine>-lgomp -pthread</commandLine>
+          <linkerLibItems>
+            <linkerLibStdlibItem>Mathematics</linkerLibStdlibItem>
+          </linkerLibItems>
+          <commandLine>-lm</commandLine>
         </linkerTool>
       </compileType>
     </conf>
@@ -73,7 +76,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
         <linkerTool>
-          <commandLine>-lgomp -pthread</commandLine>
+          <linkerLibItems>
+            <linkerLibStdlibItem>Mathematics</linkerLibStdlibItem>
+          </linkerLibItems>
+          <commandLine>-lm</commandLine>
         </linkerTool>
       </compileType>
     </conf>
