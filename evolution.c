@@ -44,10 +44,13 @@ void offspring_generation(int **pieces,int npieces,population_t *pop,long *paren
                 tmp=rand()%pop->gen_n;
                 //se l'el. estratto e già stato accoppiato
                 //prova con il successivo finchè non trova un el.da accoppiare.
+                #pragma omp critical
+                {
                 while(parents[tmp]>0)
                         tmp=((tmp+1)%pop->gen_n);
                 gen[cnt]=tmp;
                 parents[tmp]*=-1;
+        }
         }
         //DEBUG
         //printf("gen:%ld %ld\n",gen[0],gen[1]);
@@ -59,11 +62,11 @@ void offspring_generation(int **pieces,int npieces,population_t *pop,long *paren
         crossover(&pop->soluzioni[parents[gen[0]]-1],&pop->soluzioni[parents[gen[1]]-1],&offspring[i],&offspring[i+1],pieces,npieces,row,col);
         offspring[i].fitness=fitness_solution_evaluation(pieces,&offspring[i],npieces,row,col);
         //printf("Valore fitness figlio %d: %d\n",i,offspring[i].fitness);
-        i++;
-        offspring[i].fitness=fitness_solution_evaluation(pieces,&offspring[i],npieces,row,col);
+        offspring[i+1].fitness=fitness_solution_evaluation(pieces,&offspring[i],npieces,row,col);
         //printf("Valore fitness figlio %d : %d\n",i,offspring[i].fitness);
-        i++;
+
     }
+}
     return;
 }
 /*metodo sostituz 1 O(pop_dim)*/
