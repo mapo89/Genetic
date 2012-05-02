@@ -165,14 +165,16 @@ int pop_evolution(int **pieces,int npieces,population_t *pop,int row, int col,in
     //test_fitness(pop);
     sorted_popolation(pop,pieces);
     //MUTATION triggerata solo quando per tre generazioni la varianza è nulla
-    if (pop->current_iteration>pop->gen_n/5){
+    //if (pop->current_iteration>pop->gen_n/5){
         //if(abs(pop->bests[pop->current_iteration-10][MAX]-pop->bests[pop->current_iteration][MAX])<10){
-        if (pop->bests[pop->current_iteration][VARIANZA] < 1 && pop->bests[(pop->current_iteration)-1][VARIANZA] < 1 && pop->bests[(pop->current_iteration)-2][VARIANZA] < 1 ){
+    printf("current_iterartion:%d\n",pop->current_iteration);
+       if (abs( pop->bests[(pop->current_iteration)-1][VARIANZA] )< 0.1){
+    //if (&& pop->bests[(pop->current_iteration)-1][VARIANZA] < 1 && pop->bests[(pop->current_iteration)-2][VARIANZA] < 1 ){
             mutation(pieces,npieces,pop,row,col,border);
             sorted_popolation(pop,pieces);
             //fprintf(stderr,"mutazione\n");
         }
-    }
+    //}
     return(get_best(pop));
 }
 /*realizza crossover. riceve coppia genitori i puntatori ai figli e le dimensioni della soluz(cioè num pezzi) e della matrice(num righe e num col) 
@@ -1203,12 +1205,18 @@ void expand_population(int **pieces,int npieces,population_t *pop,int row,int co
     pop->gen_n=(pop->pop_dim/2+(pop->pop_dim/2)%2);
     pop->elite=pop->pop_dim/3;
     sol_array=(solution_t*)malloc(sizeof(solution_t)*pop->pop_dim);
+    if (sol_array==NULL){
+        fprintf(stderr,"Errore MALLOC escalation\n");
+        exit(2);
+    }
     for(i=0;i<old;i++){
         sol_array[i]=solution_copy(pop->soluzioni[i],row,col);
         dealloc_soluzioni(&(pop->soluzioni[i]),row,col);
     }
     for(i=old;i<pop->pop_dim;i++){
-        random_solution_generation(&(pop->soluzioni[i]),border,pieces,npieces,row,col);
+         sol_array[i]= build_solution(row,col);
+        random_solution_generation(&sol_array[i],border,pieces,npieces,row,col);
+         sol_array[i].fitness=fitness_solution_evaluation(pieces,&(sol_array[i]),npieces,row,col);
     }
     free(pop->soluzioni);
     pop->soluzioni=sol_array;

@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "pieces.h"
 #include "popolation.h"
-#define SOGLIA_ESCALATION 200
+#define SOGLIA_ESCALATION 1000
 
 
 #ifdef _OPENMP
@@ -45,6 +45,7 @@ int main(int argc, char** argv) {
     pieces=build_pieces(argv[1],&border,&npieces,&row,&col);
     population=build_population(pieces,border,npieces,row,col);
     const int MAX_PT=(row-1)*col+(col-1)*row;//costante di punti max dipende 
+    escalation=0;
     //printf("Punteggio Massimo: %d\n",MAX_PT);
     sorted_popolation(population,pieces);
     test_evolution(population,&best,MAX_PT);
@@ -63,8 +64,10 @@ int main(int argc, char** argv) {
                     escalation++;
                     if (escalation>SOGLIA_ESCALATION){
                         expand_population(pieces,npieces,population,row,col,border);
+                        population->current_iteration=0;
+                        escalation=0;
                         break;
-                }
+                    }
                 }
                 test_evolution(population,&best,MAX_PT);
         }
