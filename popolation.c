@@ -176,7 +176,7 @@ int pop_evolution(int **pieces,int npieces,population_t *pop,int row, int col,in
     //if (pop->current_iteration>pop->gen_n/5){
         //if(abs(pop->bests[pop->current_iteration-10][MAX]-pop->bests[pop->current_iteration][MAX])<10){
     printf("current_iterartion:%d\n",pop->current_iteration);
-       if (abs( pop->bests[(pop->current_iteration)-1][VARIANZA] )< 0.1){
+       if (abs( pop->bests[(pop->current_iteration)-1][VARIANZA] )< 0.5){
     //if (&& pop->bests[(pop->current_iteration)-1][VARIANZA] < 1 && pop->bests[(pop->current_iteration)-2][VARIANZA] < 1 ){
             mutation(pieces,npieces,pop,row,col,border);
             sorted_popolation(pop,pieces);

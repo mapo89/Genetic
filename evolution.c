@@ -145,7 +145,7 @@ void sub2(population_t *pop,solution_t *offspring,int row, int col){
 /*funzione per sostituire vecchie sol con i figli
  riceve vet pop vet figli, row e col (dim matrice gioco)*/
 void substitution(population_t *pop,solution_t *offspring,int row, int col){
-    sub2(pop,offspring,row,col);
+    sub1(pop,offspring,row,col);
 }
 
 /*funzione mutazione
