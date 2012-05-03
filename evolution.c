@@ -25,6 +25,7 @@ void parent_selection(long *parents,population_t *pop){
                             //perchè cambia segno in estraz gen se selez
         chosen[tmp]=TRUE;//segna come selezionato
     }
+    free(chosen);
     return;
 }
 /*funzione che genera le nuove soluzioni
@@ -104,6 +105,7 @@ void sub1(population_t *pop,solution_t *offspring,int row, int col){
             chosen[i]=TRUE;
         }
     }
+    free(chosen);
 }
 /*metodo sostituz 2 O(pop_dim^2)*/
 void sub2(population_t *pop,solution_t *offspring,int row, int col){
@@ -137,6 +139,8 @@ void sub2(population_t *pop,solution_t *offspring,int row, int col){
         pop->soluzioni[i]=offspring[cnt];
         chosen[i]=TRUE;
     }
+    free(chosen);
+    free(distribution);
 }
 /*funzione per sostituire vecchie sol con i figli
  riceve vet pop vet figli, row e col (dim matrice gioco)*/
@@ -150,17 +154,15 @@ void mutation(int **pieces,int npieces,population_t *pop,int row, int col,int *b
     long l;//indice per scorrere la matrice di soluzioni nella mutazione 
     for(l=pop->pop_dim/100;l<pop->pop_dim-1;l++){ // POP
                     random_solution_generation(&(pop->soluzioni[l]),border,pieces,npieces,row,col);   
-                    pop->soluzioni[l].fitness=fitness_solution_evaluation(pieces,&(pop->soluzioni[l]),npieces,row,col);
-                    //elite=POP_DIM/6;
+                    pop->soluzioni[l].fitness=fitness_solution_evaluation(pieces,&(pop->soluzioni[l]),npieces,row,col);          
                 }
+    ++pop->mutation;
     //fprintf(stderr,"C'è stata una mutazione");
 }
 
 void light_mutation(int **pieces,int npieces,population_t *pop,int row, int col,int *border){
     long l;//indice per scorrere la matrice di soluzioni nella mutazione 
-    for(l=5*pop->pop_dim/10;l<pop->pop_dim-1;l++){ // POP
+    for(l=pop->pop_dim/10;l<pop->pop_dim-1;l++){ // POP
         random_rotate(&(pop->soluzioni[l]),row,col);
-                    //elite=POP_DIM/6;
                 }
-    //fprintf(stderr,"C'è stata una mutazione");
 }
