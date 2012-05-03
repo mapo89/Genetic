@@ -64,7 +64,6 @@
       </toolsSet>
       <compileType>
         <cTool>
-          <developmentMode>6</developmentMode>
           <architecture>1</architecture>
         </cTool>
         <ccTool>
