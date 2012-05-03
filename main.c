@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "pieces.h"
 #include "popolation.h"
-#define SOGLIA_ESCALATION 1000
+//#define SOGLIA_ESCALATION 1000
 #define MAX_POP 50000
 
 

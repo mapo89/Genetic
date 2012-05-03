@@ -32,6 +32,7 @@ population_t *build_population(int **pieces,int *border,int npieces,int row,int 
     popolazione_start->elite=ELITE;
     popolazione_start->gen_n=GEN_N;
     popolazione_start->mutation=0;
+    popolazione_start->soglia_escaltion=SOGLIA_ESCALATION;
     return popolazione_start;
 }
 
@@ -176,7 +177,7 @@ int pop_evolution(int **pieces,int npieces,population_t *pop,int row, int col,in
     //if (pop->current_iteration>pop->gen_n/5){
         //if(abs(pop->bests[pop->current_iteration-10][MAX]-pop->bests[pop->current_iteration][MAX])<10){
     printf("current_iterartion:%d\n",pop->current_iteration);
-       if ((pop->bests[(pop->current_iteration)-1][VARIANZA]< 0.1)||((pop->bests[(pop->current_iteration)-1][VARIANZA]< 3.5))&&(pop->bests[(pop->current_iteration)-1][MEDIA]>(pop->bests[pop->current_iteration-1][MAX]-1.5))){
+       if ((pop->bests[(pop->current_iteration)-1][VARIANZA]< 0.1)||((pop->bests[(pop->current_iteration)-1][VARIANZA]< 2.5))&&(pop->bests[(pop->current_iteration)-1][MEDIA]>(pop->bests[pop->current_iteration-1][MAX]-1.0))){
             mutation(pieces,npieces,pop,row,col,border);
             sorted_popolation(pop,pieces);
             //fprintf(stderr,"mutazione\n");

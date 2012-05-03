@@ -152,8 +152,8 @@ void substitution(population_t *pop,solution_t *offspring,int row, int col){
  */
 void mutation(int **pieces,int npieces,population_t *pop,int row, int col,int *border){
     long l;//indice per scorrere la matrice di soluzioni nella mutazione
-    char ordine=log10(pop->pop_dim);
-    long starting=pow(10,ordine);
+    //char ordine=log10(pop->pop_dim);
+    long starting=100;//pow(10,ordine);
     for(l=pop->pop_dim/starting;l<pop->pop_dim-1;l++){ // POP
                     random_solution_generation(&(pop->soluzioni[l]),border,pieces,npieces,row,col);   
                     pop->soluzioni[l].fitness=fitness_solution_evaluation(pieces,&(pop->soluzioni[l]),npieces,row,col);          

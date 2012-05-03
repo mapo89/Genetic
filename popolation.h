@@ -26,6 +26,7 @@ extern "C" {
                                //evitando di estrarre le sol tra 0 ed elite 
 #define MAX_ITERATIONS 10000 // MAX_NUMERO_DI_ITERAZIONI
 #define N_MISURE 3 // MAX,MEDIA,VARIANZA 
+#define SOGLIA_ESCALATION 1000
     
     typedef enum {
                 MAX,
@@ -42,6 +43,7 @@ typedef struct population_s {
                                    //deve essere pari percui se è dispari somma 1
     long elite; //numero di migliori tra i genitori
     long mutation;
+    long soglia_escaltion;
 } population_t;
 
 //boolean val
