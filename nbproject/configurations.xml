@@ -47,6 +47,7 @@
       </toolsSet>
       <compileType>
         <cTool>
+          <developmentMode>6</developmentMode>
           <commandLine>-lm</commandLine>
         </cTool>
         <linkerTool>

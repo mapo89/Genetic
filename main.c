@@ -9,6 +9,7 @@
 #include "pieces.h"
 #include "popolation.h"
 #define SOGLIA_ESCALATION 1000
+#define MAX_POP 50000
 
 
 int main(int argc, char** argv) {
@@ -22,8 +23,8 @@ int main(int argc, char** argv) {
     int **pieces;//vettore dei colori del pezzo
     solution_t best;//contiene migliore soluzione trovata
     population_t *population; // puntatore a popolazione
+    
     srand(time(NULL)); // randomizzazione del generatore di numeri pseudocasuali
-    #pragma omp single
     if (argc != 4){
         fprintf(stderr,"Usage: %s input_file output_file stats_file",argv[0]);
         exit(2);
@@ -38,7 +39,7 @@ int main(int argc, char** argv) {
     best.fitness=population->soluzioni[0].fitness;
     best.matrice_pezzi=matcp(population->soluzioni[0],row,col);
     if(!(is_best(population,row,col))){
-        while(population->pop_dim<=50000)
+        while(population->pop_dim<=MAX_POP)
         for(i=0;(i<MAX_ITERATIONS)&&(best.fitness!=MAX_PT);i++){
             temp=pop_evolution(pieces,npieces,population,row,col,border);
                 if(temp>best.fitness){
