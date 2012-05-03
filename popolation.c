@@ -166,7 +166,7 @@ int pop_evolution(int **pieces,int npieces,population_t *pop,int row, int col,in
     //DEBUG
     //test_fitness(pop);
     sorted_popolation(pop,pieces);
-    if ( pop->bests[(pop->current_iteration)-1][VARIANZA]  < 5 && !(pop->current_iteration%100)){
+    if (rand()%2){
     //if (&& pop->bests[(pop->current_iteration)-1][VARIANZA] < 1 && pop->bests[(pop->current_iteration)-2][VARIANZA] < 1 ){
         light_mutation(pieces,npieces,pop,row,col,border);
         sorted_popolation(pop,pieces);
@@ -176,8 +176,7 @@ int pop_evolution(int **pieces,int npieces,population_t *pop,int row, int col,in
     //if (pop->current_iteration>pop->gen_n/5){
         //if(abs(pop->bests[pop->current_iteration-10][MAX]-pop->bests[pop->current_iteration][MAX])<10){
     printf("current_iterartion:%d\n",pop->current_iteration);
-       if (abs( pop->bests[(pop->current_iteration)-1][VARIANZA] )< 0.1){
-    //if (&& pop->bests[(pop->current_iteration)-1][VARIANZA] < 1 && pop->bests[(pop->current_iteration)-2][VARIANZA] < 1 ){
+       if ((pop->bests[(pop->current_iteration)-1][VARIANZA]< 0.1)||((pop->bests[(pop->current_iteration)-1][VARIANZA]< 3.5))&&(pop->bests[(pop->current_iteration)-1][MEDIA]>(pop->bests[pop->current_iteration-1][MAX]-1.5))){
             mutation(pieces,npieces,pop,row,col,border);
             sorted_popolation(pop,pieces);
             //fprintf(stderr,"mutazione\n");
