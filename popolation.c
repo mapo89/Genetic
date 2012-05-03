@@ -31,6 +31,7 @@ population_t *build_population(int **pieces,int *border,int npieces,int row,int 
     popolazione_start->pop_dim=POP_DIM;
     popolazione_start->elite=ELITE;
     popolazione_start->gen_n=GEN_N;
+    popolazione_start->mutation=0;
     return popolazione_start;
 }
 
@@ -160,14 +161,15 @@ int pop_evolution(int **pieces,int npieces,population_t *pop,int row, int col,in
     /*DEBUG
     for(i=0;i<GEN_N;printf("parent%ld:%ld\n",i,parents[i++]));*/
     offspring_generation(pieces,npieces,pop,parents,offspring,row,col);
+    free(parents);
     substitution(pop,offspring,row,col);
     //DEBUG
     //test_fitness(pop);
     sorted_popolation(pop,pieces);
-    if (abs( pop->bests[(pop->current_iteration)-1][VARIANZA] )< 2.5){
+    if ( pop->bests[(pop->current_iteration)-1][VARIANZA]  < 5 && !(pop->current_iteration%100)){
     //if (&& pop->bests[(pop->current_iteration)-1][VARIANZA] < 1 && pop->bests[(pop->current_iteration)-2][VARIANZA] < 1 ){
         light_mutation(pieces,npieces,pop,row,col,border);
-            sorted_popolation(pop,pieces);
+        sorted_popolation(pop,pieces);
             //fprintf(stderr,"mutazione\n");
         }
     //MUTATION triggerata solo quando per tre generazioni la varianza è nulla
@@ -180,7 +182,7 @@ int pop_evolution(int **pieces,int npieces,population_t *pop,int row, int col,in
             sorted_popolation(pop,pieces);
             //fprintf(stderr,"mutazione\n");
         }
-    //}
+    free(offspring);
     return(get_best(pop));
 }
 /*realizza crossover. riceve coppia genitori i puntatori ai figli e le dimensioni della soluz(cioè num pezzi) e della matrice(num righe e num col) 

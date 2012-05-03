@@ -64,7 +64,8 @@
       </toolsSet>
       <compileType>
         <cTool>
-          <commandLine>-fopenmp</commandLine>
+          <developmentMode>6</developmentMode>
+          <architecture>1</architecture>
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>

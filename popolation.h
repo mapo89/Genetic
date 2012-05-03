@@ -41,6 +41,7 @@ typedef struct population_s {
     long gen_n;//numero genitori è metà della popolazione
                                    //deve essere pari percui se è dispari somma 1
     long elite; //numero di migliori tra i genitori
+    long mutation;
 } population_t;
 
 //boolean val
