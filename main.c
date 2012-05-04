@@ -9,7 +9,8 @@
 #include "pieces.h"
 #include "popolation.h"
 //#define SOGLIA_ESCALATION 1000
-#define MAX_POP 500000
+//max pop dipendente da file 50000 con 5*5 fin troppo, con 7*7 va bene (al max evitare 25000 ma + prudente tenere)
+#define MAX_POP 50000
 
 
 int main(int argc, char** argv) {
