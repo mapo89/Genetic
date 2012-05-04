@@ -9,7 +9,7 @@
 #include "pieces.h"
 #include "popolation.h"
 //#define SOGLIA_ESCALATION 1000
-#define MAX_POP 50000
+#define MAX_POP 500000
 
 
 int main(int argc, char** argv) {
@@ -23,6 +23,7 @@ int main(int argc, char** argv) {
     int **pieces;//vettore dei colori del pezzo
     solution_t best;//contiene migliore soluzione trovata
     population_t *population; // puntatore a popolazione
+    char* filename;
     
     srand(time(NULL)); // randomizzazione del generatore di numeri pseudocasuali
     if (argc != 4){
@@ -45,6 +46,10 @@ int main(int argc, char** argv) {
                 if(temp>best.fitness){
                     best.fitness=population->soluzioni[0].fitness;
                     best.matrice_pezzi=matcp(population->soluzioni[0],row,col);
+                    if(best.fitness/MAX_PT>0.8){
+                        sprintf(filename,"%d.txt",best.fitness);
+                        write_best_solution(filename,best,row,col);
+                    }
                     escalation=0;
                 }
                 else {
