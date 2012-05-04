@@ -10,7 +10,13 @@
 #include "popolation.h"
 //#define SOGLIA_ESCALATION 1000
 //max pop dipendente da file 50000 con 5*5 fin troppo, con 7*7 va bene (al max evitare 25000 ma + prudente tenere)
+//dimensioni popolazioni (per adattarsi a spazio soluzioni)
+#define LITTLE_POP 10000
+#define SOANDSO_POP 25000
 #define MAX_POP 50000
+#define BIG_POP 100000
+#define GIGA_POP 500000
+#define JUMBO_POP 10000000
 
 
 int main(int argc, char** argv) {
