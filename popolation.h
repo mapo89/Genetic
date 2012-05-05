@@ -37,7 +37,7 @@ extern "C" {
 typedef struct population_s {
     solution_t *soluzioni;
     float bests[MAX_ITERATIONS+1][N_MISURE]; // Vettore per registrare i valore dei massimi durante l'evoluzione
-    int current_iteration; // numero dell'iterazione correnteù
+    int current_iteration; // numero dell'iterazione corrente
     long pop_dim;// dimensione popolazione
     long gen_n;//numero genitori è metà della popolazione
                                    //deve essere pari percui se è dispari somma 1
@@ -55,8 +55,8 @@ void test_fitness(population_t *pop);
 void quick_sort(solution_t *array, int l, int r, int (*cmp)(solution_t lv, solution_t rv));
 void dealloc_population(population_t *pop,int row,int col);
 void crossover(solution_t *sol1, solution_t *sol2, solution_t *fig1,solution_t *fig2,int**pieces, int npieces, int row, int col);
-void crossover_centro(int **kernelPieces,solution_t *sol1, solution_t *sol2, solution_t *fig1,solution_t *fig2, int npieces, int row, int col);
-void crossover_bordo(int **kernelPieces,solution_t *sol1, solution_t *sol2, solution_t *fig1,solution_t *fig2,int**pieces, int npieces, int row, int col);
+void crossover_centro(short signed int **kernelPieces,solution_t *sol1, solution_t *sol2, solution_t *fig1,solution_t *fig2, int npieces, int row, int col);
+void crossover_bordo(short signed int **kernelPieces,solution_t *sol1, solution_t *sol2, solution_t *fig1,solution_t *fig2,int**pieces, int npieces, int row, int col);
 int pop_evolution(int **pieces,int npieces,population_t *pop,int row, int col,int *border);
 int get_best(population_t* pop);
 int is_best(population_t* pop,int row,int col);

@@ -9,7 +9,6 @@
 #include "pieces.h"
 #include "popolation.h"
 //#define SOGLIA_ESCALATION 1000
-//max pop dipendente da file 50000 con 5*5 fin troppo, con 7*7 va bene (al max evitare 25000 ma + prudente tenere)
 //dimensioni popolazioni (per adattarsi a spazio soluzioni)
 #define LITTLE_POP 10000
 #define SOANDSO_POP 25000
@@ -30,7 +29,7 @@ int main(int argc, char** argv) {
     int **pieces;//vettore dei colori del pezzo
     solution_t best;//contiene migliore soluzione trovata
     population_t *population; // puntatore a popolazione
-    char* filename;
+    char filename[50];
     
     srand(time(NULL)); // randomizzazione del generatore di numeri pseudocasuali
     if (argc != 4){
@@ -47,15 +46,21 @@ int main(int argc, char** argv) {
     best.fitness=population->soluzioni[0].fitness;
     best.matrice_pezzi=matcp(population->soluzioni[0],row,col);
     if(!(is_best(population,row,col))){
-        while(population->pop_dim<=MAX_POP)
+        while(population->pop_dim<=BIG_POP)
         for(i=0;(i<MAX_ITERATIONS)&&(best.fitness!=MAX_PT);i++){
             temp=pop_evolution(pieces,npieces,population,row,col,border);
                 if(temp>best.fitness){
                     best.fitness=population->soluzioni[0].fitness;
                     best.matrice_pezzi=matcp(population->soluzioni[0],row,col);
-                    if(best.fitness/MAX_PT>0.8){
-                        sprintf(filename,"%d.txt",best.fitness);
+                    if((double)best.fitness/(double)MAX_PT>0.85){
+                        sprintf(filename,"s-%d.txt",best.fitness);
                         write_best_solution(filename,best,row,col);
+                    }
+                    if(best.fitness>150){
+                        sprintf(filename,"f-%d-detali.txt",best.fitness);
+                        FILE*fp=fopen(filename,"w");
+                        fprintf(fp,"pop_dim:%ld generazione:d\n",population->pop_dim,population->current_iteration);
+                        fclose(fp);
                     }
                     escalation=0;
                 }

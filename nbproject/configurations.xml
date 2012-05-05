@@ -65,7 +65,8 @@
       </toolsSet>
       <compileType>
         <cTool>
-          <architecture>1</architecture>
+          <developmentMode>6</developmentMode>
+          <architecture>2</architecture>
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
