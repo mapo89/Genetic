@@ -1152,7 +1152,7 @@ void write_best_solution(char *nomefile,solution_t sol,int row,int col) {
     int i,j; // contatori nel ciclo 
     FILE *fp;//puntatore al file  di pezzi
      if ((fp=fopen(nomefile,"w")) == NULL){
-                 fprintf(stderr,"build_population()-errore in malloc() di kernelPieces.\n");
+                 fprintf(stderr,"write_best_solution()-errore apertura file\n");
                  exit(2);
          }
      for(i=0;i<row;i++)
@@ -1218,8 +1218,11 @@ void expand_population(int **pieces,int npieces,population_t *pop,int row,int co
         exit(2);
     }
     for(i=0;i<old;i++){
+        sol_array[i]=pop->soluzioni[i];
+/*
         sol_array[i]=solution_copy(pop->soluzioni[i],row,col);
         dealloc_soluzioni(&(pop->soluzioni[i]),row,col);
+*/
     }
     for(i=old;i<pop->pop_dim;i++){
          sol_array[i]= build_solution(row,col);

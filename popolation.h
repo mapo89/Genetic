@@ -24,10 +24,10 @@ extern "C" {
 //#define CASUALI (GEN_N-ELITE)//genitori da scegliere a caso (sol 0-elite)
 #define RANGE_CAS (POP_DIM-ELITE)//numero di valori tra cui estrarre gli el casuali
                                //evitando di estrarre le sol tra 0 ed elite 
-#define MAX_ITERATIONS 10000 // MAX_NUMERO_DI_ITERAZIONI
 #define N_MISURE 3 // MAX,MEDIA,VARIANZA 
 #define SOGLIA_ESCALATION 1000
-    
+#define MAX_ITERATIONS  10000// MAX_NUMERO_DI_ITERAZIONI in realtà se continua a migliorare best potrebbe essere di
+ 
     typedef enum {
                 MAX,
                 MEDIA,
@@ -62,6 +62,7 @@ int get_best(population_t* pop);
 int is_best(population_t* pop,int row,int col);
 void test_evolution(population_t *pop,solution_t *best,const int MAX_PT);
 void write_best_solution(char *nomefile,solution_t sol,int row,int col);
+
 #ifdef	__cplusplus
 }
 #endif
